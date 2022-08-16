@@ -1,6 +1,8 @@
 # Assets for the book Low-Frequency Electromagnetic Modeling
 by Makarov, Noetscher and Nazarian
 
+[Wiley - Low-Frequency Electromagnetic Modeling](https://www.wiley.com/legacy/wileychi/makarov/)
+
 ![](cover.jpg)
 
 ![](snapshot/figureE40.png)
