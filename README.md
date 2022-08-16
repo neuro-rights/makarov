@@ -40,6 +40,28 @@ Sergey N. Makarov, Gregory M. Noetscher, and Ara Nazarian
 ![](computational/figure03.png)
 ![](computational/figure04.png)
 
+
+analyt.m 4.1
+This function returns double potential MoM self-integrals I = IsIs(1/r) on triangles given by Eq. (4.20)
+
+potint.m 4.2
+This function returns single potential MoM integrals I = Is(1/r) given by Eq. (4.25) and integrals IRho=Is(vec(r)/r)
+
+test1.m 4.2
+A script that illustrates the use of Gaussian quadratures on triangles to find a single potential MoM integral, I = Is(1/r)
+
+test2.m 4.2
+A script that illustrates the use of barycentric quadratures on triangles to find a single potential MoM integral I = Is(1/r)
+
+tri.m 4.2
+This function returns integration points and weights in Eqs. (4.23) and (4.24), for barycentric triangle subdivision and for Gaussian quadratures on triangles, respectively.
+
+potint2.m 6.1
+This function returns single potential MoM integrals Int = Is(grad(1/r)) given by Eq. (6.14) and follows the method described in Wang Z, Volakis J, Saitou K, Kurabayashi K. Comparison of semi-analytical formulations and Gaussian-quadrature rules for quasi-static double-surface potential integrals. IEEE Antennas Propag. Mag. 2003;45 (6):96–102.
+
+test1.m 6.1
+This scrip illustrates the use of Gaussian quadratures on triangles to find a single potential MoM integral I = Is(grad(1/r))
+
 ![](bodycell/fig18a.png)
 
 
