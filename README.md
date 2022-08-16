@@ -1,4 +1,4 @@
-# [Assets for the book Wiley - Low-Frequency Electromagnetic Modeling](https://www.wiley.com/legacy/wileychi/makarov/)
+#### [Assets for Low-Frequency Electromagnetic Modeling for Electrical and Biological Systems Using MATLAB](https://www.wiley.com/legacy/wileychi/makarov/)
 Sergey N. Makarov, Gregory M. Noetscher, and Ara Nazarian
 
 ![](cover.jpg)
