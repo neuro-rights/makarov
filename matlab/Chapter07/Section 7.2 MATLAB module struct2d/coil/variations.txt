@@ -1,0 +1,8 @@
+Design variations and corresponding parameter values:
+
+struct2d_var1
+d_out1 = 40
+d_out2 = 39
+d_in1 = 20
+d_in2 = 19
+cut = 0.7

@@ -1,0 +1,9 @@
+Design variations and corresponding parameter values:
+
+struct2d_var1
+w = 1
+d = 1
+W = 10
+th1 = 0.025
+th2 = 0.2
+sep = 1

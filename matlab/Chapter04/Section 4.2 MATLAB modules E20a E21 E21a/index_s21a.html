@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <!--Neva EM, LLC 2012-->
+      <title>E21a-Capacitance of a parallel-plate capacitorwith adaptive mesh refinement - MoM/BEM numerical solution</title>
+      <meta name="generator" content="MATLAB 7.13">
+      <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+      <meta name="DC.date" content="2012-05-28">
+      <meta name="DC.source" content="version21.m">
+
+      <style type="text/css">
+            body {background-color: white; margin:10px;}
+            h1 {color: #990000; font-size: x-large;}
+            h2 {color: #990000;font-size: medium;}
+            /* Make the text shrink to fit narrow windows, but not stretch too far in wide windows. */ 
+            p,h1,h2,div.content div { max-width: 600px; width: auto !important; width: 600px;}
+            pre.codeinput {background: #EEEEEE; padding: 10px;}
+            @media print {pre.codeinput {word-wrap:break-word; width:100%;}} 
+            span.keyword {color: #0000FF}
+            span.comment {color: #228B22}
+            span.string {color: #A020F0}
+            span.untermstring {color: #B20000}
+            span.syscmd {color: #B28C00}
+            pre.codeoutput {color: #666666; padding: 10px;}
+            pre.error {color: red;}
+            p.footer {text-align: right; font-size: xx-small; font-weight: lighter; font-style: italic;color: gray;}
+		    td { width: 200px; overflow:visible } 
+            table { width : 400px; table-layout: fixed; }
+        </style>
+</head>
+  
+<body><div class="content"><h1>E21a-Capacitance of a parallel-plate capacitor with adaptive mesh refinement - MoM/BEM numerical solution</h1>
+   <!--INTRODUCTION-->
+      <p>The MATLAB function <tt>E21a.m</tt> is a stand-alone accurate simulator for capacitance of a parallel-plate capacitor utilizing the Method of Moments and adaptive mesh refinement with Laplacian smoothing. Its general features include:</p>
+      <div><ul><h4>
+	    <li>User friendly and intuitive programmatic GUI</li>
+		<li>The project I/O data may be saved in separate project file(s)</li>
+        <li>Implemented entirely in basic MATLAB (R2011a or later)</li>
+        <li>No MATLAB toolboxes are needed</li>
+	  </h4></ul></div>
+	  <p>The technical features include:</p>
+      <div><ul><h4>		   
+        <li>Conducting plates may have arbitrary dimensions</li>  
+		<li>The program outputs convergence data for capacitance and a series of refined meshes</li> 
+	  </h4></ul></div>
+	  <p>The adaptive mesh refinement procedure is implemented as follows:</p>
+	  <div><ul><h4>
+		<li>The solution starts with the uniform mesh</li>
+		<li>After the charges are found, the electric potential Vi is recalculated at the centers of all faces</li>
+		<li>The mesh refinement is done for those faces where the error between the recalculated Vi and the fixed global V is the largest</li> 
+		<li>Edges of triangular faces under question are subdivided by insertion of an extra node at the edge centers</li>
+		<li>Delaunay triangulation is applied</li>
+		<li>Laplacian mesh smoothing (see below) is applied</li>
+		<li>The algorithm repeats itself for a given number of iterations</li>      
+      </h4></ul></div>
+	  <p>The program also uses a convergence speed-up algorithm, which may be employed with or without adaptive mesh refinement:</p>
+	  <div><ul><h4>
+		<li>The electric potential Vi is recalculated at the centers of all faces</li>
+		<li>A local error V-Vi is now the right-hand side of MoM equations</li>
+		<li>MoM equations are solved the second time, which gives the local charge error dCi</li>
+		<li>The solution for the local charge is corrected as Ci->Ci-dCi</li>				    
+      </h4></ul></div>
+	  
+	  
+	  
+  <!--/INTRODUCTION-->
+  <!--CONTENTS-->
+  <h2>Contents</h2>
+    <div><ul>
+        <li><a href="#1">Getting started </a></li>
+        <ul>
+            <li><a href="#11">Default parameters</a></li>
+            <li><a href="#12">Run the default configuration</a></li>
+            <li><a href="#13">Observe the results</a></li>
+            <li><a href="#14">Save the results/geometry configuration</a></li>
+        </ul>
+        <li><a href="#2">Description of program menu</a></li>
+        <ul>
+          <li><a href="#21">  Menu item - Project</a></li>
+            <li><a href="#22">Menu item - Save figure</a></li>
+            <li><a href="#23">Menu item - First plate</a></li>
+            <li><a href="#24">Menu item - Second plate</a></li>                      
+            <li><a href="#26">Menu item - Modeling setup</a></li>
+            <li><a href="#27">Menu item - Output data</a></li>
+			<li><a href="#28">Button Simulate</a></li>
+			<li><a href="#29">Button Reload</a></li>
+			<li><a href="#29b">Button Separate window</a></li>
+			<li><a href="#30">Button Exit</a></li>
+        </ul>
+  
+    </ul></div>
+    <!--/CONTENTS-->
+    
+    <!--ITEM#1-->
+    <h1>Getting started<a name="1"></a></h1>
+    <p>This section describes how the program executes using a default set of parameters.</p>
+        <h2>Default parameters<a name="11"></a></h2>
+        <div><ul>
+                <li>When first opened, MATLAB program <tt>E21a.m</tt> loads a default set of parameters.</li>
+                <li>This set models capacitance of two parallel plates on the size of 1m by 1m separated by 0.1m</li>				
+                <ul>                    
+					<li>The mesh will be adaptively refined using <a href="#26">Modeling setup</a> parameters</li>
+					<li>The program stops after 5 iterations</li>
+					<li>After the program finishes, the complete convergence results are observed using the script <tt>wrapperE21a.m</tt></li>
+					<li>This script plots minimum triangle quality at every iteration</li>				
+					<li>Along with this, it plots the solution error estimated using three different ways:</li>
+					<ul>
+						<li> #1 - Red curve - numerical capacitance is the ratio of the total charge on the upper plate to the fixed potential difference, i.e. sum(Ci*Ai)/(V2-V1)</li>
+						<li> #2 - Magenta curve - numerical capacitance is the ratio of the total charge on the upper plate to the difference in averaged numeric potentials given by sum(Vi*Ai)/sum(Ai) where Ai is triangle area</li>
+						<li> #3 - Blue curve - numerical capacitance is 1/(1/sum(C1i*A1i/V1i)+1/sum(C2i*A2i/V2i))</li>
+					</ul>			
+					<li> The main program window uses the error estimate #2 (magenta curve)</li>										
+                </ul>           
+        </ul></div>		
+ 
+        <h2>Run the default configuration<a name="12"></a></h2>
+        <div><ul>
+                <li>The program is executed using the <a href="#28">Simulate</a> menu.</li>
+				<li>The waitbars indicate CPU time necessary to run different numerical subroutines</li>
+                <li>The results are automatically updated after the simulation has been finished</li> 
+				<li>The simulations cannot be interrupted</li>                           
+        </ul></div>
+     
+        <h2>Observe the results<a name="13"></a></h2>
+        <div><ul>
+				<li>When the simulation is finished the figure updates automatically</li>				
+                <li>All other numerical results are observed using the script <tt>wrapperE21a.m</tt></li> 									                  
+        </ul></div>             
+        <h2>Save the results/geometry configuration<a name="14"></a></h2>
+        <div><ul>                
+                <li>The figure with charge distributions and/or field/potential distributions is saved using <a href="#22">Save figure<a/> menu</li>  
+				<li>All I/O numerical data (geometry, capacitance and field at a point) is saved using <a href="#21">Project<a/> menu</li> 				
+        </ul></div>  
+    <!--/ITEM#1-->
+
+    <!--ITEM#2-->
+    <h1>Detailed description of program menu<a name="2"></a></h1>
+    <p>This section describes all program menu options.</p>
+        <h2>Menu item - Project<a name="21"></a></h2>
+        <div><ul>
+                <li>This menu item opens and saves project files. Every project file is a <tt>*.mat</tt> file.</li>               
+        </ul></div>
+        <h2>Menu item - Save figure<a name="22"></a></h2>
+        <div><ul>
+                <li>This menu item saves the figure with charge/field distributions as a MATLAB figure or as a jpeg/png file</li>
+        </ul></div>
+        <h2>Menu item - First plate<a name="23"></a></h2>
+        <div><ul>
+                <li>This menu item specifies electric potential/voltage applied to the first (typically bottom) metal plate</li>
+				<li>This menu item specifies all geometry parameters for the first (bottom) metal plate</li>				
+                <li>Once a parameter is changed, the initial uniform triangular mesh of the entire structure is recreated</li>			
+        </ul></div>
+        <h2>Menu item - Second plate<a name="24"></a></h2>        
+         <div><ul>
+                <li>This menu item specifies electric potential/voltage applied to the second (typically top) metal plate</li>
+				<li>This menu item specifies all geometry parameters for the second (top) metal plate</li>
+				<li>Once a parameter is changed, the initial uniform triangular mesh of the entire structure is recreated</li>	
+        </ul></div>   
+		<h2>Menu item - Modeling setup<a name="26"></a></h2> 
+		<div><ul>
+				<li>This menu item specifies numerical parameters of the MoM algorithm with adaptive mesh refinement</li>
+				<li>The first parameter is the dimensionless radius of the integration sphere, R</li>
+				<li>If a pair of triangles of "sizes" s1, s2 is separated by d, then R=d/sqrt(s1*s2)</li>
+				<li>For triangles spaced closer than R, the accurate numerical integration is performed</li>
+				<li>In this case, the inner potential integral is found analytically; the outer integral uses a Gaussian quadrature with a prescribed number of points (second menu item)</li>
+				<li>Otherwise, the center-point approximation is used while performing double integration</li> 
+				<li>The third menu item gives the number of iterations steps. Irrespective of this number, the program stops when the number of faces exceeds 40,000</li>
+				<li>The fourth menu item describes face percentage to be refined, with respect to the potential error</li>
+				<li>The fifth menu item specifies how exactly the potential error is estimated. We use the expression error=abs(V-Vi)*Ai^p where p is a power of the area correction factor</li>
+				<li>The sixth menu item specifies if all edges of a triangle in question have to be refined or only the edges shared by two triangles in question</li> 
+				<li>The last menu item specifies the type of Laplacian smoothing used:</li>
+				<ul>
+						<li> #1 - Standard (t-centers)</li>
+						<li> #2 - Lumped Laplacian smoothing</li>
+						<li> #3 - Centroid Voronoi Tessellation (CVT) smoothing (incenters)</li>
+						<li> #3 - Weighted Centroid of Circumcenters (WCC) smoothing (circumcenters)</li>
+				</ul>										           
+        </ul></div>   	          
+	    <h2>Menu item - Output data<a name="27"></a></h2> 
+		<div><ul>
+				<li>This menu item lists calculated parameters including self-capacitance and minimum triangle quality at the last iteration step</li>						
+				<li>The exact number of triangular patches in the final mesh is additionally listed as well as execution times</li>          
+        </ul></div>   
+    	<h2>Button Simulate<a name="28"></a></h2> 
+		<div><ul>
+				<li>This button starts MoM simulations</li>
+				<li>The simulations cannot be interrupted</li>
+				<li>The simulations for adaptive mesh refinement include multiple parts</li>				
+				<li>Using structures with more than 30,000 triangular patches is not recommended</li>
+        </ul></div>   
+		<h2>Button Reload<a name="29"></a></h2> 
+		<div><ul>
+				<li>This button cleans up the previous solution and reloads the structure</li>
+        </ul></div>   
+		<h2>Button Separate window<a name="29b"></a></h2> 
+		<div><ul>
+				<li>This button copies the GUI output figure into a separate figure window. You could zoom in, rotate, and modify the resulting figure as required</li>
+        </ul></div>   
+		<h2>Button Exit<a name="30"></a></h2> 
+		<div><ul>
+				<li>This button exits the module</li>
+        </ul></div>   
+		
+        <!--/ITEM#2-->
+
+ <p class="copy">&copy; 2012 Neva EM, LLC and ECE Dept., WPI
+       
+
+</body>
+</html>
