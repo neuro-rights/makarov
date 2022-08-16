@@ -1,9 +1,9 @@
-#### [Assets for Low-Frequency Electromagnetic Modeling for Electrical and Biological Systems Using MATLAB](https://www.wiley.com/legacy/wileychi/makarov/)
+### [Assets for Low-Frequency Electromagnetic Modeling for Electrical and Biological Systems Using MATLAB](https://www.wiley.com/legacy/wileychi/makarov/)
 Sergey N. Makarov, Gregory M. Noetscher, and Ara Nazarian
 
 ![](cover.jpg)
 
-##### List of Simple Scripts/Functions for MoM Integrals included with the Text
+#### [List of Simple Scripts/Functions for MoM Integrals included with the Text](simple.docx)
 
 analyt.m 4.1
 This function returns double potential MoM self-integrals I = IsIs(1/r) on triangles given by Eq. (4.20)
